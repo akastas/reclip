@@ -9,28 +9,6 @@
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link rel="stylesheet" href="/static/style.css">
-<style type="text/tailwindcss">
-    :root {
-        --lavender: #d8b4fe;
-        --peach: #ffb5a7;
-        --mint: #a7f3d0;
-        --prismatic-gradient: linear-gradient(135deg, var(--lavender) 0%, var(--peach) 50%, var(--mint) 100%);
-    }
-    .bg-prismatic {
-        background-image: var(--prismatic-gradient);
-    }
-    .text-prismatic {
-        background-image: var(--prismatic-gradient);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-    }
-    .font-bricolage {
-        font-family: 'Bricolage Grotesque', sans-serif;
-    }
-</style>
 <script>
   tailwind.config = {
     darkMode: "class",
@@ -60,11 +38,33 @@
     },
   };
 </script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="/static/style.css">
+<style type="text/tailwindcss">
+    :root {
+        --lavender: #d8b4fe;
+        --peach: #ffb5a7;
+        --mint: #a7f3d0;
+        --prismatic-gradient: linear-gradient(135deg, var(--lavender) 0%, var(--peach) 50%, var(--mint) 100%);
+    }
+    .bg-prismatic {
+        background-image: var(--prismatic-gradient);
+    }
+    .text-prismatic {
+        background-image: var(--prismatic-gradient);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+    .font-bricolage {
+        font-family: 'Bricolage Grotesque', sans-serif;
+    }
+</style>
 </head>
 <body class="bg-[#0a0c0e] text-on-surface font-body min-h-screen flex flex-col overflow-x-hidden selection:bg-primary/30 selection:text-primary">
 
 <nav class="w-full z-50 font-headline pt-8 mt-2">
-  <div class="max-w-content mx-auto px-6 lg:px-12 flex justify-between items-center">
+  <div class="max-w-[1600px] mx-auto px-6 lg:px-12 flex justify-between items-center">
     <div class="flex items-center gap-4">
         <a class="text-[28px] font-extrabold tracking-tight text-prismatic hover:opacity-80 transition-opacity" href="#">
           ReClip
@@ -84,7 +84,7 @@
 
 <main id="top" class="flex-grow flex flex-col pt-[120px] lg:pt-[160px] pb-24 w-full">
 
-  <section class="max-w-content mx-auto w-full mb-[120px] flex flex-col items-start px-6 lg:px-12">
+  <section class="max-w-[1600px] mx-auto w-full mb-[120px] flex flex-col items-start px-6 lg:px-12">
     <div class="flex flex-col items-start w-full">
       <h1 class="font-headline text-[5xl] md:text-[7xl] lg:text-[88px] font-extrabold tracking-tighter text-on-surface mb-6 leading-[1.0] text-left">
         Extract the <br/>
@@ -154,7 +154,7 @@
     </div>
   </section>
 
-  <section id="history" class="max-w-content mx-auto w-full px-6 lg:px-12 scroll-mt-20">
+  <section id="history" class="max-w-[1600px] mx-auto w-full px-6 lg:px-12 scroll-mt-20">
     <div class="flex items-center justify-between mb-8 w-full">
       <h2 class="font-headline text-[32px] font-extrabold text-white tracking-tight">Recent Archives</h2>
       <button id="refresh-history" class="text-white font-bold text-[15px] hover:text-[#d8b4fe] transition-colors flex items-center gap-2">
@@ -176,7 +176,7 @@
 </main>
 
 <footer class="w-full py-12 mt-[120px] border-t border-white/5 font-body">
-    <div class="max-w-content mx-auto px-6 lg:px-12 flex flex-col xl:flex-row justify-between items-center gap-8 text-[14px]">
+    <div class="max-w-[1600px] mx-auto px-6 lg:px-12 flex flex-col xl:flex-row justify-between items-center gap-8 text-[14px]">
         <div class="text-[22px] font-extrabold text-prismatic" style="background-image: var(--prismatic-gradient); -webkit-background-clip: text; background-clip: text; color: transparent;">
             ReClip
         </div>

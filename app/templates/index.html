@@ -9,6 +9,28 @@
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="/static/style.css">
+<style type="text/tailwindcss">
+    :root {
+        --lavender: #d8b4fe;
+        --peach: #ffb5a7;
+        --mint: #a7f3d0;
+        --prismatic-gradient: linear-gradient(135deg, var(--lavender) 0%, var(--peach) 50%, var(--mint) 100%);
+    }
+    .bg-prismatic {
+        background-image: var(--prismatic-gradient);
+    }
+    .text-prismatic {
+        background-image: var(--prismatic-gradient);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+    .font-bricolage {
+        font-family: 'Bricolage Grotesque', sans-serif;
+    }
+</style>
 <script>
   tailwind.config = {
     darkMode: "class",
@@ -38,28 +60,6 @@
     },
   };
 </script>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link rel="stylesheet" href="/static/style.css">
-<style type="text/tailwindcss">
-    :root {
-        --lavender: #d8b4fe;
-        --peach: #ffb5a7;
-        --mint: #a7f3d0;
-        --prismatic-gradient: linear-gradient(135deg, var(--lavender) 0%, var(--peach) 50%, var(--mint) 100%);
-    }
-    .bg-prismatic {
-        background-image: var(--prismatic-gradient);
-    }
-    .text-prismatic {
-        background-image: var(--prismatic-gradient);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-    }
-    .font-bricolage {
-        font-family: 'Bricolage Grotesque', sans-serif;
-    }
-</style>
 </head>
 <body class="bg-[#0a0c0e] text-on-surface font-body min-h-screen flex flex-col overflow-x-hidden selection:bg-primary/30 selection:text-primary">
 
@@ -85,15 +85,6 @@
 <main id="top" class="flex-grow flex flex-col pt-[120px] lg:pt-[160px] pb-24 w-full">
 
   <section class="max-w-[1600px] mx-auto w-full mb-[120px] flex flex-col items-start px-6 lg:px-12">
-    <div class="flex flex-col items-start w-full">
-      <h1 class="font-headline text-[5xl] md:text-[7xl] lg:text-[88px] font-extrabold tracking-tighter text-on-surface mb-6 leading-[1.0] text-left">
-        Extract the <br/>
-        <span class="text-prismatic">Cinematic Stream.</span>
-      </h1>
-      <p class="font-body text-on-surface/60 text-lg md:text-[22px] max-w-2xl font-light mb-12 leading-relaxed">
-        Paste a link, pick a format, download. Works on 1,800+ sites. <br/>High-fidelity artifact isolation.
-      </p>
-    </div>
 
     <form id="download-form" class="w-full relative bg-[#111417] p-2.5 rounded-[2.5rem] flex flex-col md:flex-row items-center gap-2 border border-white/5 z-10 shadow-2xl">
       <div class="flex-grow flex items-center px-6 w-full group transition-all">

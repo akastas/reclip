@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ReClip</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📥</text></svg>">
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="/static/style.css">
+<script>
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          background: "#0a0c0e",
+          surface: "#111417",
+          "surface-container": "#1d2023",
+          "surface-container-low": "#16181b",
+          "surface-container-high": "#272a2e",
+          primary: "#d8b4fe",
+          "on-surface": "#f1f3f6",
+          "on-background": "#f1f3f6",
+          "outline-variant": "#323538",
+          error: "#ffb4ab",
+        },
+        fontFamily: {
+          headline: ["Bricolage Grotesque"],
+          body: ["Bricolage Grotesque"],
+          label: ["Bricolage Grotesque"],
+        },
+        maxWidth: {
+          "content": "1600px",
+        },
+      },
+    },
+  };
+</script>
+</head>
+<body class="bg-background text-on-surface font-body min-h-screen flex flex-col overflow-x-hidden selection:bg-primary/30 selection:text-primary">
+
+<div class="fixed top-0 left-0 w-full h-[600px] opacity-[0.15] -z-10 pointer-events-none" style="background: var(--mesh-gradient);"></div>
+<div class="fixed inset-0 bg-background/80 -z-10 pointer-events-none"></div>
+
+<nav class="sticky top-0 w-full z-50 bg-black/40 backdrop-blur-2xl border-b border-white/5 font-headline">
+  <div class="max-w-content mx-auto px-4 sm:px-8 lg:px-12 flex justify-between items-center h-14 sm:h-16">
+    <a class="text-xl sm:text-2xl font-extrabold tracking-tight text-prismatic" href="#">ReClip</a>
+    <div class="hidden md:flex items-center gap-8 text-sm">
+      <a class="text-on-surface" href="#top">Converter</a>
+      <a class="text-on-surface/60 hover:text-on-surface transition-colors" href="#history">History</a>
+      <a class="text-on-surface/60 hover:text-on-surface transition-colors" href="https://github.com/yt-dlp/yt-dlp" target="_blank" rel="noopener">yt-dlp</a>
+    </div>
+    <span class="text-[10px] sm:text-xs text-on-surface/30 font-semibold tracking-widest uppercase">self-hosted</span>
+  </div>
+</nav>
+
+<main id="top" class="flex-grow">
+
+  <!-- Hero + converter -->
+  <section class="max-w-content mx-auto px-4 sm:px-8 lg:px-12 pt-8 sm:pt-14 lg:pt-20 pb-6">
+    <h1 class="font-headline font-extrabold tracking-tight text-on-surface leading-[0.95] mb-3 sm:mb-5
+               text-3xl sm:text-5xl lg:text-6xl xl:text-7xl">
+      Extract the <span class="text-prismatic">Cinematic Stream.</span>
+    </h1>
+    <p class="font-body text-on-surface/55 font-light mb-6 sm:mb-10
+              text-sm sm:text-base lg:text-lg max-w-3xl">
+      Paste a link, pick a format, download. Works on 1,800+ sites.
+    </p>
+
+    <form id="download-form" class="flex items-center gap-2 sm:gap-3 w-full">
+
+      <!-- Search bar: URL + preset — takes all available width -->
+      <div class="flex-1 min-w-0 flex items-center bg-white/5 backdrop-blur-3xl
+                  border border-white/10 hover:border-white/20 focus-within:border-primary/40
+                  rounded-2xl transition-all duration-300 shadow-xl overflow-visible">
+
+        <!-- URL input -->
+        <div class="flex-1 min-w-0 flex items-center px-4 sm:px-6 py-3.5 sm:py-5">
+          <span class="material-symbols-outlined text-primary mr-2 sm:mr-3 opacity-60 text-base sm:text-xl shrink-0">link</span>
+          <input id="url" type="url" required autofocus autocomplete="off" spellcheck="false"
+                 class="bg-transparent border-none outline-none text-on-surface font-body w-full min-w-0
+                        placeholder:text-on-surface/30 text-sm sm:text-lg"
+                 placeholder="Paste a link"/>
+        </div>
+
+        <!-- Divider -->
+        <div class="w-px self-stretch bg-white/8 shrink-0 my-2"></div>
+
+        <!-- Preset -->
+        <div id="preset-dropdown" class="relative shrink-0">
+          <button type="button" id="preset-button"
+                  class="flex items-center gap-1.5 px-3 sm:px-5 py-3.5 sm:py-5 cursor-pointer
+                         hover:bg-white/5 transition-colors text-xs sm:text-sm whitespace-nowrap">
+            <span id="preset-label" class="font-headline text-on-surface/80 font-semibold">Best MP4</span>
+            <span class="material-symbols-outlined text-on-surface/40 text-base">expand_more</span>
+          </button>
+          <input type="hidden" id="preset" value="best"/>
+          <div id="preset-menu" class="hidden absolute top-full right-0 mt-2 w-56
+                      bg-surface-container/98 backdrop-blur-2xl rounded-xl border border-white/10
+                      shadow-2xl overflow-hidden z-30">
+            {% for key, preset in presets.items() %}
+            <button type="button" data-preset="{{ key }}"
+                    class="preset-option w-full text-left px-4 py-2.5 text-sm font-headline text-on-surface
+                           hover:bg-white/5 transition-colors flex items-center justify-between">
+              <span>{{ preset.label }}</span>
+              <span class="material-symbols-outlined text-primary text-sm opacity-0 check">check</span>
+            </button>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Download — separate button outside the search bar -->
+      <button type="submit" id="submit-btn"
+              class="shrink-0 bg-prismatic text-black font-headline font-bold
+                     rounded-2xl transition-all active:scale-95
+                     hover:shadow-[0_0_24px_rgba(216,180,254,0.35)]
+                     disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:shadow-none
+                     flex items-center justify-center gap-2
+                     px-4 sm:px-8 py-3.5 sm:py-5 text-sm sm:text-base">
+        <span id="submit-label" class="hidden sm:inline">Download</span>
+        <span class="material-symbols-outlined text-lg sm:text-xl">download</span>
+      </button>
+
+    </form>
+
+    <!-- Subtitles toggle -->
+    <div class="mt-3 sm:mt-4 flex items-center gap-3 pl-1 sm:pl-3">
+      <label for="subtitles" class="flex items-center gap-2.5 cursor-pointer select-none group">
+        <span class="relative inline-flex h-5 w-9 shrink-0 rounded-full bg-white/10 transition-colors duration-200 group-has-[:checked]:bg-prismatic">
+          <input id="subtitles" type="checkbox" class="peer sr-only"/>
+          <span class="absolute top-0.5 left-0.5 h-4 w-4 rounded-full bg-on-surface shadow transition-transform duration-200 peer-checked:translate-x-4"></span>
+        </span>
+        <span class="text-on-surface/60 group-hover:text-on-surface transition-colors font-medium text-xs sm:text-sm tracking-wide">Embed subtitles (en · ru · uk · it)</span>
+      </label>
+    </div>
+
+    <!-- Active job panel -->
+    <div id="active-job" class="hidden mt-5 sm:mt-6 w-full bg-white/5 backdrop-blur-2xl p-4 sm:p-6 rounded-2xl border border-white/10 shadow-xl">
+      <div class="flex items-start justify-between gap-4 mb-4">
+        <div class="flex-1 min-w-0">
+          <div class="text-[10px] sm:text-xs font-headline font-bold tracking-widest uppercase text-primary mb-1" id="active-stage">INITIALIZING</div>
+          <div class="font-headline text-base sm:text-lg font-bold text-on-surface truncate" id="active-title">Preparing…</div>
+        </div>
+        <div class="font-headline text-2xl sm:text-3xl font-black text-prismatic shrink-0 tabular-nums" id="progress-pct">0%</div>
+      </div>
+      <div class="progress-bar h-1.5 bg-black/40 rounded-full overflow-hidden">
+        <div id="progress-fill" class="h-full w-0 bg-prismatic transition-[width] duration-200 rounded-full"></div>
+      </div>
+      <div class="mt-3 flex items-center justify-between font-body text-xs text-on-surface/50 gap-3">
+        <span id="progress-bytes" class="truncate tabular-nums"></span>
+        <div class="flex items-center gap-3 shrink-0 tabular-nums">
+          <span id="progress-speed"></span>
+          <span id="progress-eta"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- History -->
+  <section id="history" class="max-w-content mx-auto px-4 sm:px-8 lg:px-12 py-10 sm:py-14 scroll-mt-20">
+    <div class="flex items-center justify-between mb-5 sm:mb-8">
+      <h2 class="font-headline text-xl sm:text-2xl lg:text-3xl font-bold text-on-surface tracking-tight">Recent Archives</h2>
+      <button id="refresh-history" class="text-primary font-semibold text-sm hover:opacity-70 transition-opacity flex items-center gap-1.5">
+        <span class="hidden sm:inline">Refresh</span>
+        <span class="material-symbols-outlined text-lg">refresh</span>
+      </button>
+    </div>
+    <div id="history-grid"
+         class="grid gap-3 sm:gap-4 lg:gap-5
+                grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"></div>
+    <div id="history-empty" class="hidden text-center py-16">
+      <div class="inline-flex items-center justify-center w-14 h-14 rounded-full bg-white/5 border border-white/10 mb-4">
+        <span class="material-symbols-outlined text-2xl text-on-surface/40">inbox</span>
+      </div>
+      <p class="font-headline text-base sm:text-lg font-bold text-on-surface/60 mb-1">No archives yet</p>
+      <p class="font-body text-sm text-on-surface/40">Your first download will appear here.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="bg-black/60 backdrop-blur-md w-full py-6 sm:py-8 border-t border-white/5 font-body">
+  <div class="max-w-content mx-auto px-4 sm:px-8 lg:px-12 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs sm:text-sm">
+    <div class="text-lg sm:text-xl font-black text-prismatic">ReClip</div>
+    <div class="flex flex-wrap justify-center gap-4 sm:gap-8 text-on-surface/40">
+      <span>1,800+ sites</span>
+      <span>24h auto-delete</span>
+      <a class="hover:text-primary transition-colors" href="https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md" target="_blank" rel="noopener">Supported sites</a>
+    </div>
+    <div class="text-on-surface/30 tabular-nums">self-hosted · yt-dlp</div>
+  </div>
+</footer>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

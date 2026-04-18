@@ -82,9 +82,9 @@
   </div>
 </nav>
 
-<main id="top" class="flex-grow flex flex-col pt-[120px] lg:pt-[160px] pb-24 w-full items-center">
+<main id="top" class="flex-grow flex flex-col pt-[120px] lg:pt-[160px] pb-24 w-full">
 
-  <section class="max-w-content w-full mb-[120px] flex flex-col items-start px-6 lg:px-12">
+  <section class="max-w-content mx-auto w-full mb-[120px] flex flex-col items-start px-6 lg:px-12">
     <div class="flex flex-col items-start w-full">
       <h1 class="font-headline text-[5xl] md:text-[7xl] lg:text-[88px] font-extrabold tracking-tighter text-on-surface mb-6 leading-[1.0] text-left">
         Extract the <br/>
@@ -95,7 +95,7 @@
       </p>
     </div>
 
-    <form id="download-form" class="w-full relative max-w-full lg:max-w-5xl bg-[#111417] p-2.5 rounded-full flex flex-col md:flex-row items-center gap-2 border border-white/5 z-10 shadow-2xl">
+    <form id="download-form" class="w-full relative bg-[#111417] p-2.5 rounded-[2.5rem] flex flex-col md:flex-row items-center gap-2 border border-white/5 z-10 shadow-2xl">
       <div class="flex-grow flex items-center px-6 w-full group transition-all">
         <span class="material-symbols-outlined text-white/50 mr-4 text-xl">link</span>
         <input id="url" type="url" required autofocus autocomplete="off" spellcheck="false" class="bg-transparent border-none outline-none text-white font-body w-full placeholder:text-white/20 text-lg group-focus-within:placeholder:opacity-50" placeholder="Paste a link"/>
@@ -133,7 +133,7 @@
       </label>
     </div>
 
-    <div id="active-job" class="hidden mt-8 w-full max-w-[800px] bg-[#111417] p-6 rounded-[2rem] border border-white/5 shadow-2xl transition-all">
+    <div id="active-job" class="hidden mt-8 w-full bg-[#111417] p-6 sm:p-8 rounded-[2rem] border border-white/5 shadow-2xl transition-all">
       <div class="flex items-start justify-between gap-4 mb-5">
         <div class="flex-1 min-w-0">
           <div class="text-[11px] font-headline font-bold tracking-widest uppercase text-[#d8b4fe] mb-2" id="active-stage">INITIALIZING</div>
@@ -154,8 +154,8 @@
     </div>
   </section>
 
-  <section id="history" class="max-w-content w-full px-6 lg:px-12 scroll-mt-20">
-    <div class="flex items-center justify-between mb-8 w-full mx-auto">
+  <section id="history" class="max-w-content mx-auto w-full px-6 lg:px-12 scroll-mt-20">
+    <div class="flex items-center justify-between mb-8 w-full">
       <h2 class="font-headline text-[32px] font-extrabold text-white tracking-tight">Recent Archives</h2>
       <button id="refresh-history" class="text-white font-bold text-[15px] hover:text-[#d8b4fe] transition-colors flex items-center gap-2">
         <span class="hidden sm:inline">Refresh</span>

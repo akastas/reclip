@@ -135,38 +135,33 @@ function renderJob(j) {
   const audio = isAudioPreset(j.preset);
   const icon  = audio ? "audio_file" : "movie";
 
-  let statusChip, statusColor, borderCls, accentCls, actionRow;
+  let statusChip, statusColor, actionRow;
 
   if (j.status === "running") {
     statusChip  = "Running";
     statusColor = "primary";
-    borderCls   = "border-white/5 hover:border-primary/20";
-    accentCls   = "bg-white/5 text-primary";
     actionRow   = "";
   } else if (j.status === "error") {
     statusChip  = "Failed";
     statusColor = "error";
-    borderCls   = "border-error/20";
-    accentCls   = "bg-error/10 text-error";
-    actionRow   = `<p class="mt-3 text-sm text-error/80 line-clamp-2">${escapeHtml((j.error || "").slice(0, 140))}</p>`;
+    actionRow   = `<p class="mt-3 text-[14px] text-[#ffb4ab]/80 line-clamp-2">${escapeHtml((j.error || "").slice(0, 140))}</p>`;
   } else if (j.status === "done" && !j.file_exists) {
     statusChip  = "Expired Link";
     statusColor = "error";
-    borderCls   = "border-error/20";
-    accentCls   = "bg-error/10 text-error";
     actionRow   = "";
   } else {
     statusChip  = "Completed";
     statusColor = "primary";
-    borderCls   = "border-white/5 hover:border-primary/20";
-    accentCls   = "bg-white/5 text-primary";
     actionRow   = "";
   }
 
-  const chipBorder = statusColor === "error" ? "border-error/30" : "border-primary/20";
-  const chipBg     = statusColor === "error" ? "bg-error/20 text-error" : "bg-primary/10 text-primary";
-  const titleOpacity = (j.status === "error" || (j.status === "done" && !j.file_exists)) ? "text-on-surface/80" : "text-on-surface";
-  const metaOpacity  = (j.status === "error" || (j.status === "done" && !j.file_exists)) ? "text-on-surface/30" : "text-on-surface/40";
+  const isError = statusColor === "error";
+  const chipBorder = isError ? "border-[#ffb4ab]/20" : "border-[#d8b4fe]/20";
+  const chipText   = isError ? "text-[#ffb4ab]" : "text-[#d8b4fe]";
+  const iconBg     = isError ? "bg-[#ffb4ab]/10" : "bg-white/5";
+  
+  const titleOpacity = isError ? "text-white/80" : "text-white";
+  const metaOpacity  = isError ? "text-white/20" : "text-white/30";
 
   const sizeBadge = (j.status === "done" && j.file_exists && j.filesize)
     ? ` · ${humanBytes(j.filesize)}`
@@ -174,43 +169,43 @@ function renderJob(j) {
 
   const canDownload = j.status === "done" && j.file_exists;
   const actions = `
-    <div class="absolute top-3 right-3 z-20 flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+    <div class="absolute top-4 right-4 z-20 flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
       ${canDownload ? `
         <a href="/download/${j.id}" download
-           class="w-8 h-8 rounded-full bg-black/60 hover:bg-prismatic hover:text-black border border-white/10 flex items-center justify-center text-on-surface/80 transition-all"
+           class="w-10 h-10 rounded-full bg-[#111417]/80 hover:bg-[#d8b4fe] hover:text-black border border-white/10 flex items-center justify-center text-white/80 transition-all shadow-xl"
            title="Download file">
-          <span class="material-symbols-outlined text-base">download</span>
+          <span class="material-symbols-outlined text-[18px] font-bold">download</span>
         </a>` : ""}
       <button type="button" data-delete="${j.id}"
-              class="w-8 h-8 rounded-full bg-black/60 hover:bg-error/20 hover:text-error border border-white/10 flex items-center justify-center text-on-surface/60 transition-all"
+              class="w-10 h-10 rounded-full bg-[#111417]/80 hover:bg-[#ffb4ab]/20 hover:text-[#ffb4ab] hover:border-[#ffb4ab]/30 border border-white/10 flex items-center justify-center text-white/60 transition-all shadow-xl"
               title="Delete entry">
-        <span class="material-symbols-outlined text-base">close</span>
+        <span class="material-symbols-outlined text-[18px]">close</span>
       </button>
     </div>`;
 
   const hostLine = j.url
-    ? `<span class="font-body text-xs ${metaOpacity} flex items-center gap-1 truncate">
-         <span class="material-symbols-outlined text-sm">public</span>${escapeHtml(hostOf(j.url))}
+    ? `<span class="font-body text-[15px] ${metaOpacity} flex items-center gap-2.5 truncate">
+         <span class="material-symbols-outlined text-[18px]">public</span>${escapeHtml(hostOf(j.url))}
        </span>`
     : "";
 
   return `
-    <div class="job-card bg-surface-container-low p-4 rounded-xl flex flex-col gap-3 group relative overflow-hidden border ${borderCls} transition-all duration-300">
-      ${statusColor === "primary"
+    <div class="job-card bg-surface-container-low p-8 rounded-[32px] flex flex-col justify-between min-h-[300px] border border-white/5 hover:border-white/10 transition-colors group relative overflow-hidden">
+      ${!isError
         ? `<div class="absolute inset-0 bg-prismatic opacity-0 group-hover:opacity-[0.04] transition-opacity duration-500 pointer-events-none"></div>`
-        : `<div class="absolute top-0 right-0 w-28 h-28 bg-error/10 blur-[60px] rounded-full pointer-events-none"></div>`}
+        : `<div class="absolute top-0 right-0 w-[120px] h-[120px] bg-[#ffb4ab]/10 blur-[60px] rounded-full pointer-events-none"></div>`}
       ${actions}
-      <div class="flex items-center justify-between z-10 gap-2">
-        <div class="${accentCls} w-9 h-9 rounded-lg flex items-center justify-center shrink-0">
-          <span class="material-symbols-outlined text-xl">${icon}</span>
+      <div class="flex items-start justify-between z-10 w-full gap-2">
+        <div class="${iconBg} w-[52px] h-[52px] rounded-2xl flex items-center justify-center ${chipText} shrink-0">
+          <span class="material-symbols-outlined text-[24px]">${icon}</span>
         </div>
-        <div class="${chipBg} font-bold text-[10px] px-2.5 py-0.5 rounded-full border ${chipBorder} uppercase tracking-wider">${statusChip}</div>
+        <div class="${chipText} font-bold text-[11px] uppercase tracking-wider px-4 py-1.5 rounded-full border ${chipBorder}">${statusChip}</div>
       </div>
-      <div class="z-10 min-w-0">
-        <h3 class="font-headline text-sm font-bold ${titleOpacity} mb-1 truncate group-hover:text-prismatic transition-colors" title="${escapeHtml(title)}">${escapeHtml(title)}</h3>
-        <div class="flex items-center justify-between gap-2 min-w-0">
+      <div class="z-10 mt-12 w-full min-w-0">
+        <h3 class="font-headline text-[24px] font-bold ${titleOpacity} mb-3 truncate group-hover:text-prismatic transition-colors" title="${escapeHtml(title)}">${escapeHtml(title)}</h3>
+        <div class="flex items-center justify-between mt-4 min-w-0 gap-4">
           ${hostLine}
-          <span class="font-headline text-[11px] text-on-surface/30 font-medium shrink-0">${humanTime(j.created_at)}${sizeBadge}</span>
+          <span class="font-body text-[14px] text-white/30 truncate shrink-0">${humanTime(j.created_at)}${sizeBadge}</span>
         </div>
         ${actionRow}
       </div>

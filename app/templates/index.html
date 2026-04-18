@@ -54,7 +54,7 @@
           label: ["Bricolage Grotesque", "sans-serif"],
         },
         maxWidth: {
-          "content": "1400px",
+          "content": "1600px",
         },
       },
     },
@@ -64,7 +64,7 @@
 <body class="bg-[#0a0c0e] text-on-surface font-body min-h-screen flex flex-col overflow-x-hidden selection:bg-primary/30 selection:text-primary">
 
 <nav class="w-full z-50 font-headline pt-8 mt-2">
-  <div class="max-w-[1400px] mx-auto px-10 flex justify-between items-center">
+  <div class="max-w-content mx-auto px-6 lg:px-12 flex justify-between items-center">
     <div class="flex items-center gap-4">
         <a class="text-[28px] font-extrabold tracking-tight text-prismatic hover:opacity-80 transition-opacity" href="#">
           ReClip
@@ -82,20 +82,20 @@
   </div>
 </nav>
 
-<main id="top" class="flex-grow flex flex-col pt-[160px] pb-24 w-full items-center">
+<main id="top" class="flex-grow flex flex-col pt-[120px] lg:pt-[160px] pb-24 w-full items-center">
 
-  <section class="max-w-[1200px] w-full mb-[120px] flex flex-col items-start px-10">
+  <section class="max-w-content w-full mb-[120px] flex flex-col items-start px-6 lg:px-12">
     <div class="flex flex-col items-start w-full">
-      <h1 class="font-headline text-[7xl] md:text-[88px] font-extrabold tracking-tighter text-on-surface mb-6 leading-[1.0] text-left">
+      <h1 class="font-headline text-[5xl] md:text-[7xl] lg:text-[88px] font-extrabold tracking-tighter text-on-surface mb-6 leading-[1.0] text-left">
         Extract the <br/>
         <span class="text-prismatic">Cinematic Stream.</span>
       </h1>
-      <p class="font-body text-on-surface/60 text-[22px] max-w-2xl font-light mb-12 leading-relaxed">
+      <p class="font-body text-on-surface/60 text-lg md:text-[22px] max-w-2xl font-light mb-12 leading-relaxed">
         Paste a link, pick a format, download. Works on 1,800+ sites. <br/>High-fidelity artifact isolation.
       </p>
     </div>
 
-    <form id="download-form" class="w-full relative max-w-[800px] bg-[#111417] p-2.5 rounded-full flex flex-col md:flex-row items-center gap-2 border border-white/5 z-10 shadow-2xl">
+    <form id="download-form" class="w-full relative max-w-full lg:max-w-5xl bg-[#111417] p-2.5 rounded-full flex flex-col md:flex-row items-center gap-2 border border-white/5 z-10 shadow-2xl">
       <div class="flex-grow flex items-center px-6 w-full group transition-all">
         <span class="material-symbols-outlined text-white/50 mr-4 text-xl">link</span>
         <input id="url" type="url" required autofocus autocomplete="off" spellcheck="false" class="bg-transparent border-none outline-none text-white font-body w-full placeholder:text-white/20 text-lg group-focus-within:placeholder:opacity-50" placeholder="Paste a link"/>
@@ -154,8 +154,8 @@
     </div>
   </section>
 
-  <section id="history" class="max-w-[1400px] w-full px-10 scroll-mt-20">
-    <div class="flex items-center justify-between mb-8 w-full max-w-[1240px] mx-auto">
+  <section id="history" class="max-w-content w-full px-6 lg:px-12 scroll-mt-20">
+    <div class="flex items-center justify-between mb-8 w-full mx-auto">
       <h2 class="font-headline text-[32px] font-extrabold text-white tracking-tight">Recent Archives</h2>
       <button id="refresh-history" class="text-white font-bold text-[15px] hover:text-[#d8b4fe] transition-colors flex items-center gap-2">
         <span class="hidden sm:inline">Refresh</span>
@@ -163,7 +163,7 @@
       </button>
     </div>
     
-    <div id="history-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-[1240px] mx-auto w-full"></div>
+    <div id="history-grid" class="grid gap-4 sm:gap-6 lg:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mx-auto w-full"></div>
     <div id="history-empty" class="hidden text-center py-20 w-full col-span-3">
       <div class="inline-flex items-center justify-center w-20 h-20 rounded-[2rem] bg-[#111417] border border-white/5 mb-6">
         <span class="material-symbols-outlined text-[32px] text-white/20">inbox</span>
@@ -176,7 +176,7 @@
 </main>
 
 <footer class="w-full py-12 mt-[120px] border-t border-white/5 font-body">
-    <div class="max-w-[1400px] mx-auto px-10 flex flex-col md:flex-row justify-between items-center gap-8 text-[14px]">
+    <div class="max-w-content mx-auto px-6 lg:px-12 flex flex-col xl:flex-row justify-between items-center gap-8 text-[14px]">
         <div class="text-[22px] font-extrabold text-prismatic" style="background-image: var(--prismatic-gradient); -webkit-background-clip: text; background-clip: text; color: transparent;">
             ReClip
         </div>

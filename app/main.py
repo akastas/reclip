@@ -143,7 +143,17 @@ def _safe_filename(name: str) -> str:
 
 def run_download(job_id: str, url: str, preset_key: str, subtitles: bool, loop: asyncio.AbstractEventLoop):
     state = JOBS[job_id]
-    preset = FORMAT_PRESETS[preset_key]
+
+    if preset_key.startswith("id:"):
+        preset = {
+            "ydl": {
+                "format": preset_key[3:],
+                # Default to mkv for arbitrary merges if formats clash, but mp4 usually preferred
+                "merge_output_format": "mp4" 
+            }
+        }
+    else:
+        preset = FORMAT_PRESETS.get(preset_key, FORMAT_PRESETS["best"])
 
     job_dir = DOWNLOADS_DIR / job_id
     job_dir.mkdir(parents=True, exist_ok=True)
@@ -260,6 +270,81 @@ class DownloadRequest(BaseModel):
     preset: str = "best"
     subtitles: bool = False
 
+class InfoRequest(BaseModel):
+    url: str
+
+def get_video_info(url: str):
+    ydl_opts = {
+        "quiet": True,
+        "no_warnings": True,
+        "noplaylist": True,
+        "extractor_args": {
+            "youtube": {"player_client": ["ios", "web_safari", "web"]},
+        },
+    }
+    if COOKIES_FILE.exists():
+        ydl_opts["cookiefile"] = str(COOKIES_FILE)
+
+    with YoutubeDL(ydl_opts) as ydl:
+        info = ydl.extract_info(url, download=False)
+        
+    best_audio = None
+    for f in reversed(info.get('formats', [])):
+        if f.get('acodec') != 'none' and f.get('vcodec') == 'none':
+            if not best_audio or f.get('abr', 0) > best_audio.get('abr', 0):
+                best_audio = f
+
+    options = []
+    heights_seen = set()
+    
+    for f in sorted(info.get('formats', []), key=lambda x: x.get('height') or 0, reverse=True):
+        if f.get('vcodec') != 'none':
+            h = f.get('height')
+            if not h or h in heights_seen:
+                continue
+                
+            size = f.get('filesize') or f.get('filesize_approx') or 0
+            audio_size = best_audio.get('filesize') or best_audio.get('filesize_approx') or 0 if best_audio else 0
+            
+            if f.get('acodec') != 'none':
+                total_size = size
+                fmt_id = f['format_id']
+            else:
+                total_size = size + audio_size
+                fmt_id = f"{f['format_id']}+{best_audio['format_id']}" if best_audio else f['format_id']
+                
+            ext = f.get('ext', 'mp4')
+            fps = f.get('fps', 0)
+            
+            label = f"{h}p" + (f"60" if fps and fps > 30 else "") + f" ({ext.upper()})"
+            options.append({
+                'label': label,
+                'id': f"id:{fmt_id}",
+                'size': total_size,
+                'height': h
+            })
+            heights_seen.add(h)
+    
+    if best_audio:
+        size = best_audio.get('filesize') or best_audio.get('filesize_approx') or 0
+        options.append({
+            'label': f"Audio Only ({best_audio.get('ext', 'mp3').upper()})",
+            'id': f"id:{best_audio['format_id']}",
+            'size': size,
+            'height': 0
+        })
+
+    # Always ensure a fallback generic option if parsing yields zero mapped formats
+    if not options:
+        options.append({'label': 'Best Auto', 'id': 'best', 'size': 0, 'height': 0})
+
+    return {
+        "title": info.get("title", ""),
+        "thumbnail": info.get("thumbnail", ""),
+        "duration": info.get("duration", 0),
+        "host": info.get("extractor_key", ""),
+        "options": options
+    }
 
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
@@ -269,9 +354,20 @@ async def index(request: Request):
     })
 
 
+@app.post("/api/info")
+async def fetch_info(req: InfoRequest):
+    if not re.match(r"^https?://", req.url.strip()):
+        raise HTTPException(400, "URL must start with http(s)://")
+    loop = asyncio.get_event_loop()
+    try:
+        data = await loop.run_in_executor(None, get_video_info, req.url.strip())
+        return data
+    except Exception as e:
+        raise HTTPException(500, str(e)[:500])
+
 @app.post("/api/download")
 async def start_download(req: DownloadRequest):
-    if req.preset not in FORMAT_PRESETS:
+    if not req.preset.startswith("id:") and req.preset not in FORMAT_PRESETS:
         raise HTTPException(400, "Unknown preset")
     if not re.match(r"^https?://", req.url.strip()):
         raise HTTPException(400, "URL must start with http(s)://")

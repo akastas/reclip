@@ -28,7 +28,7 @@ const presetDropdown = document.getElementById("preset-dropdown");
 const presetButton   = document.getElementById("preset-button");
 const presetLabel    = document.getElementById("preset-label");
 const presetMenu     = document.getElementById("preset-menu");
-const presetOptions  = Array.from(document.querySelectorAll(".preset-option"));
+let presetOptions    = Array.from(document.querySelectorAll(".preset-option"));
 
 function setPreset(key, label) {
   presetInput.value = key;
@@ -56,11 +56,22 @@ presetOptions.forEach(opt => {
   });
 });
 document.addEventListener("click", (e) => {
-  if (!presetDropdown.contains(e.target)) presetDropdown.classList.remove("open");
+  if (presetDropdown && !presetDropdown.contains(e.target)) presetDropdown.classList.remove("open");
 });
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") presetDropdown.classList.remove("open");
+  if (e.key === "Escape" && presetDropdown) presetDropdown.classList.remove("open");
 });
+
+function attachPresetListeners() {
+  presetOptions = Array.from(document.querySelectorAll(".preset-option"));
+  presetOptions.forEach(opt => {
+    opt.addEventListener("click", () => {
+      setPreset(opt.dataset.preset, opt.querySelector("span").textContent);
+      presetDropdown.classList.remove("open");
+    });
+  });
+}
+attachPresetListeners();
 
 // ---------------------------------------------------------------------------
 // Formatters
@@ -217,9 +228,13 @@ refreshBtn.addEventListener("click", refreshHistory);
 // ---------------------------------------------------------------------------
 // Submit
 // ---------------------------------------------------------------------------
+let analysisCompleteFor = null;
+
 function resetSubmit() {
   submitBtn.disabled = false;
   submitLabel.textContent = "Download";
+  document.querySelector('.drop-icon').textContent = 'download';
+  document.querySelector('.drop-icon').classList.remove('animate-spin');
 }
 
 function showActive(stage, title) {
@@ -228,14 +243,87 @@ function showActive(stage, title) {
   activeTitle.textContent = title;
 }
 
+urlInput.addEventListener("input", () => {
+    if (urlInput.value.trim() !== analysisCompleteFor) {
+        analysisCompleteFor = null;
+        document.getElementById("metadata-preview").classList.add("hidden");
+        document.getElementById("preset-dropdown").classList.add("hidden");
+        document.getElementById("preset-dropdown").classList.remove("flex");
+        document.getElementById("subtitles-container").classList.add("hidden");
+        submitLabel.textContent = "Analyze Engine";
+        document.querySelector('.drop-icon').textContent = 'bolt';
+    }
+});
+
+async function goAnalyze(url) {
+  submitBtn.disabled = true;
+  submitLabel.textContent = "Analyzing...";
+  document.querySelector('.drop-icon').textContent = 'sync';
+  document.querySelector('.drop-icon').classList.add('animate-spin');
+
+  try {
+    const r = await fetch("/api/info", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ url })
+    });
+    if (!r.ok) throw new Error("Extracting metadata failed.");
+    const data = await r.json();
+
+    document.getElementById("meta-title").textContent = data.title || "Encrypted Artifact";
+    document.getElementById("meta-host-text").textContent = data.host || "Unknown Core";
+    document.getElementById("meta-thumb").src = data.thumbnail || "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
+    
+    let html = "";
+    data.options.forEach(opt => {
+       const sizeStr = opt.size ? humanBytes(opt.size) : "UKN MB";
+       html += `<button type="button" data-preset="${opt.id}" class="preset-option w-full text-left px-5 py-3 text-sm font-headline text-white hover:bg-white/10 transition-colors flex items-center justify-between">
+              <span>${opt.label} · ${sizeStr}</span>
+              <span class="material-symbols-outlined text-[#d8b4fe] text-sm opacity-0 check font-bold">check</span>
+            </button>`;
+    });
+    presetMenu.innerHTML = html;
+    
+    attachPresetListeners();
+    if (presetOptions.length) {
+      const first = presetOptions[0];
+      setPreset(first.dataset.preset, first.querySelector("span").textContent);
+    }
+
+    document.getElementById("metadata-preview").classList.remove("hidden");
+    document.getElementById("metadata-preview").classList.add("flex");
+    document.getElementById("preset-dropdown").classList.remove("hidden");
+    document.getElementById("preset-dropdown").classList.add("flex");
+    document.getElementById("subtitles-container").classList.remove("hidden");
+    
+    analysisCompleteFor = url;
+    submitLabel.textContent = "Download";
+    document.querySelector('.drop-icon').textContent = 'download';
+    document.querySelector('.drop-icon').classList.remove('animate-spin');
+    submitBtn.disabled = false;
+  } catch (err) {
+    showActive("ERROR", err.message);
+    submitLabel.textContent = "Analyze Engine";
+    document.querySelector('.drop-icon').textContent = 'bolt';
+    document.querySelector('.drop-icon').classList.remove('animate-spin');
+    submitBtn.disabled = false;
+  }
+}
+
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const url = urlInput.value.trim();
   if (!url) return;
 
+  if (analysisCompleteFor !== url) {
+    await goAnalyze(url);
+    return;
+  }
+
   submitBtn.disabled = true;
   submitLabel.textContent = "Starting…";
-  showActive("INITIALIZING", "Fetching metadata…");
+  document.querySelector('.drop-icon').classList.add('animate-spin');
+  showActive("INITIALIZING", "Fetching data streams…");
   fill.style.width = "0%";
   fill.classList.add("shimmer");
   pctEl.textContent = "0%";
@@ -283,7 +371,7 @@ form.addEventListener("submit", async (e) => {
         : "";
       showActive("DOWNLOADING", "Streaming artifact…");
     } else if (d.type === "postprocess") {
-      showActive("PROCESSING", "Encoding via ffmpeg…");
+      showActive("PROCESSING", "Target acquired… mapping streams.");
       fill.style.width = "100%";
       pctEl.textContent = "100%";
       speedEl.textContent = "";
@@ -292,20 +380,20 @@ form.addEventListener("submit", async (e) => {
       showActive("COMPLETE", d.title || d.filename);
       fill.classList.remove("shimmer");
       refreshHistory();
-      // Trigger browser download
       window.location.href = `/download/${d.job_id}`;
+      analysisCompleteFor = null;
+      urlInput.value = "";
     } else if (d.type === "error") {
       showActive("FAILED", d.error || "Unknown error");
       fill.classList.remove("shimmer");
       refreshHistory();
     } else if (d.type === "end") {
       resetSubmit();
-      urlInput.value = "";
     }
   };
 
   ws.onerror = () => {
-    showActive("DISCONNECTED", "Connection lost");
+    showActive("DISCONNECTED", "Connection to master lost");
     fill.classList.remove("shimmer");
     resetSubmit();
   };

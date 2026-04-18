@@ -86,35 +86,38 @@
 
   <section class="max-w-[1600px] mx-auto w-full mb-[120px] flex flex-col items-start px-6 lg:px-12">
 
-    <form id="download-form" class="w-full relative bg-[#111417] p-2.5 rounded-[2.5rem] flex flex-col md:flex-row items-center gap-2 border border-white/5 z-10 shadow-2xl">
+    <form id="download-form" class="w-full relative bg-[#111417] p-2.5 rounded-[2.5rem] flex flex-col md:flex-row items-center gap-2 border border-white/5 z-10 shadow-2xl transition-all">
       <div class="flex-grow flex items-center px-6 w-full group transition-all">
         <span class="material-symbols-outlined text-white/50 mr-4 text-xl">link</span>
         <input id="url" type="url" required autofocus autocomplete="off" spellcheck="false" class="bg-transparent border-none outline-none text-white font-body w-full placeholder:text-white/20 text-lg group-focus-within:placeholder:opacity-50" placeholder="Paste a link"/>
       </div>
       
-      <div id="preset-dropdown" class="relative shrink-0 flex">
+      <div id="preset-dropdown" class="relative shrink-0 hidden">
         <button type="button" id="preset-button" class="relative bg-[#16181b] rounded-full px-6 py-4 flex items-center shrink-0 w-full md:w-auto justify-between cursor-pointer hover:bg-[#1a1d21] transition-colors gap-8 border border-white/5">
-          <span id="preset-label" class="font-body text-white font-medium text-[15px]">Best MP4</span>
+          <span id="preset-label" class="font-body text-white font-medium text-[15px]">Select Format</span>
           <span class="material-symbols-outlined text-white/40 text-xl font-bold">expand_more</span>
         </button>
         <input type="hidden" id="preset" value="best"/>
-        <div id="preset-menu" class="hidden absolute top-full right-0 mt-2 w-56 bg-[#16181b] backdrop-blur-2xl rounded-[1.5rem] border border-white/10 shadow-2xl overflow-hidden z-30 py-2">
-            {% for key, preset in presets.items() %}
-            <button type="button" data-preset="{{ key }}" class="preset-option w-full text-left px-5 py-3 text-sm font-headline text-white hover:bg-white/10 transition-colors flex items-center justify-between">
-              <span>{{ preset.label }}</span>
-              <span class="material-symbols-outlined text-[#d8b4fe] text-sm opacity-0 check font-bold">check</span>
-            </button>
-            {% endfor %}
+        <div id="preset-menu" class="hidden absolute top-full right-0 mt-2 w-72 bg-[#16181b] backdrop-blur-2xl rounded-[1.5rem] border border-white/10 shadow-2xl overflow-hidden z-30 py-2">
+            <!-- Dynamically populated options -->
         </div>
       </div>
       
       <button type="submit" id="submit-btn" class="bg-prismatic text-black font-headline font-black text-lg px-8 py-4 rounded-full w-full md:w-auto shrink-0 transition-opacity hover:opacity-90 flex items-center justify-center gap-3 active:scale-95 shadow-[0_0_20px_rgba(216,180,254,0.15)] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:shadow-none">
-        <span id="submit-label">Download</span>
-        <span class="material-symbols-outlined font-bold text-xl">download</span>
+        <span id="submit-label">Analyze Engine</span>
+        <span class="material-symbols-outlined font-bold text-xl drop-icon">bolt</span>
       </button>
     </form>
     
-    <div class="mt-8 flex items-center gap-3 pl-4">
+    <div id="metadata-preview" class="hidden mt-6 w-full max-w-[600px] bg-[#111417] flex-col sm:flex-row items-center p-4 rounded-[2rem] border border-white/5 shadow-xl transition-all">
+      <img id="meta-thumb" src="" alt="Thumbnail preview" class="w-full sm:w-[120px] h-[120px] sm:h-[68px] object-cover rounded-xl shrink-0 sm:mr-5 mb-4 sm:mb-0 bg-black/50" />
+      <div class="flex-1 min-w-0 text-center sm:text-left w-full">
+        <h3 id="meta-title" class="font-headline text-white font-bold text-lg truncate mb-1"></h3>
+        <p id="meta-host" class="font-body text-white/40 text-[14px] flex items-center justify-center sm:justify-start gap-1.5"><span class="material-symbols-outlined text-[16px]">public</span><span id="meta-host-text"></span></p>
+      </div>
+    </div>
+
+    <div id="subtitles-container" class="hidden mt-8 flex items-center gap-3 pl-4">
       <label for="subtitles" class="flex items-center gap-3 cursor-pointer select-none group">
         <span class="relative inline-flex h-6 w-11 shrink-0 rounded-full bg-white/10 transition-colors duration-200 group-has-[:checked]:bg-[#d8b4fe] shadow-[inset_0_2px_4px_rgba(0,0,0,0.4)]">
           <input id="subtitles" type="checkbox" class="peer sr-only"/>

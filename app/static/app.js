@@ -358,6 +358,14 @@ async function goAnalyze(url) {
     submitBtn.disabled = false;
   } catch (err) {
     showActive("ERROR", err.message);
+    resetSubmit();
+    
+    // If the server was blocked but it's a known restricted host, show the local fallback anyway
+    const L = url.toLowerCase();
+    if (L.includes("youtube.com") || L.includes("youtu.be") || L.includes("instagram.com")) {
+        document.getElementById("cli-fallback-panel").classList.remove("hidden");
+        if (typeof updateCliCommand === "function") updateCliCommand();
+    }
     submitLabel.textContent = "Analyze Engine";
     document.querySelector('.drop-icon').textContent = 'bolt';
     document.querySelector('.drop-icon').classList.remove('animate-spin');

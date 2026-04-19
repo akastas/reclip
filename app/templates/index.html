@@ -127,6 +127,58 @@
       </label>
     </div>
 
+    <!-- CLI Fallback UI -->
+    <div id="cli-fallback-panel" class="hidden mt-8 w-full bg-[#111417]/50 p-6 md:p-8 rounded-[2rem] border border-white/5 shadow-2xl relative overflow-hidden group transition-all">
+        <div class="absolute top-0 right-0 w-[120px] h-[120px] bg-[#d8b4fe]/5 blur-[60px] rounded-full pointer-events-none"></div>
+
+        <div class="flex items-start gap-4 mb-6">
+            <div class="bg-white/5 w-[48px] h-[48px] rounded-2xl flex items-center justify-center text-[#d8b4fe] shrink-0 border border-white/5">
+                <span class="material-symbols-outlined text-[24px]">terminal</span>
+            </div>
+            <div class="flex-1">
+                <h3 class="font-headline text-white font-bold text-[20px] tracking-tight mb-1">Local Extraction Recommended</h3>
+                <p class="font-body text-white/50 text-[15px] leading-relaxed">It looks like a strongly authenticated host was detected! Since servers are heavily blocked, running this exact extraction on your personal computer is <span class="text-white/80 font-bold">100% secure</span> and bypasses all blocks instantly by using your home IP address.</p>
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <h4 class="font-headline text-[13px] font-bold text-white/40 uppercase tracking-widest mb-3">1. Select your logged-in browser</h4>
+            <div class="flex flex-wrap gap-2" id="browser-toggles">
+                <button type="button" data-browser="chrome" class="browser-btn px-4 py-2 rounded-xl border border-[#d8b4fe]/30 bg-[#d8b4fe]/10 text-white text-[14px] font-medium transition-colors cursor-pointer">Chrome</button>
+                <button type="button" data-browser="firefox" class="browser-btn px-4 py-2 rounded-xl border border-white/5 bg-transparent text-white/50 hover:bg-white/5 hover:text-white text-[14px] font-medium transition-colors cursor-pointer">Firefox</button>
+                <button type="button" data-browser="safari" class="browser-btn px-4 py-2 rounded-xl border border-white/5 bg-transparent text-white/50 hover:bg-white/5 hover:text-white text-[14px] font-medium transition-colors cursor-pointer">Safari</button>
+                <button type="button" data-browser="edge" class="browser-btn px-4 py-2 rounded-xl border border-white/5 bg-transparent text-white/50 hover:bg-white/5 hover:text-white text-[14px] font-medium transition-colors cursor-pointer">Edge</button>
+            </div>
+        </div>
+
+        <div class="mb-5">
+            <h4 class="font-headline text-[13px] font-bold text-white/40 uppercase tracking-widest mb-3">2. Run this generated command</h4>
+            <div class="bg-[#0a0c0e] rounded-[1.25rem] p-4 flex items-center justify-between overflow-hidden border border-white/5 relative group/code shadow-inner">
+                <code id="cli-command" class="font-mono text-[13.5px] text-[#a7f3d0] whitespace-nowrap overflow-x-auto pr-14 custom-scrollbar select-all">yt-dlp --cookies-from-browser chrome -f "best" "https://"</code>
+                <button type="button" id="copy-cli" class="absolute right-2 top-1/2 -translate-y-1/2 bg-[#16181b] hover:bg-[#1d2023] w-[36px] h-[36px] rounded-[10px] flex items-center justify-center transition-all border border-white/5 shadow-lg group-hover/code:opacity-100 opacity-0 sm:opacity-100 active:scale-95 z-10 cursor-pointer">
+                    <span id="copy-icon" class="material-symbols-outlined text-[18px] text-white/60">content_copy</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="bg-[#0a0c0e]/50 rounded-[1.25rem] p-4 border border-white/5">
+            <div class="flex items-center gap-2 mb-2">
+                <span class="material-symbols-outlined text-[16px] text-white/30">info</span>
+                <span class="font-headline text-[13px] font-bold text-white/50 uppercase tracking-widest">Dependencies</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-[13px] font-body text-white/40">
+                <div>
+                    <strong class="text-white">yt-dlp</strong>
+                    <div class="mt-1 font-mono text-[12px] bg-white/5 px-2 py-1 rounded w-fit border border-white/5">pip install yt-dlp</div>
+                </div>
+                <div>
+                    <strong class="text-white">ffmpeg</strong>
+                    <div class="mt-1 leading-snug">Requires <code class="font-mono bg-white/5 px-1 rounded text-white/60">ffmpeg</code> in your system path.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="active-job" class="hidden mt-8 w-full bg-[#111417] p-6 sm:p-8 rounded-[2rem] border border-white/5 shadow-2xl transition-all">
       <div class="flex items-start justify-between gap-4 mb-5">
         <div class="flex-1 min-w-0">

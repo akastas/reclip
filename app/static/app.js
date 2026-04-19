@@ -38,6 +38,7 @@ function setPreset(key, label) {
     o.querySelector(".check").classList.toggle("opacity-0", !on);
     o.querySelector(".check").classList.toggle("opacity-100", on);
   });
+  if (typeof updateCliCommand === "function") updateCliCommand();
 }
 // initialise with whatever is currently marked
 if (presetOptions.length) {
@@ -226,9 +227,56 @@ function renderJob(j) {
 refreshBtn.addEventListener("click", refreshHistory);
 
 // ---------------------------------------------------------------------------
-// Submit
+// Submit & CLI Fallback
 // ---------------------------------------------------------------------------
 let analysisCompleteFor = null;
+let activeBrowser = "chrome";
+
+const browserBtns = document.querySelectorAll(".browser-btn");
+const cliCommandEl = document.getElementById("cli-command");
+const copyCliBtn = document.getElementById("copy-cli");
+
+browserBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+        activeBrowser = btn.dataset.browser;
+        browserBtns.forEach(b => {
+             const on = (b === btn);
+             b.className = on 
+                ? "browser-btn px-4 py-2 rounded-xl border border-[#d8b4fe]/30 bg-[#d8b4fe]/10 text-white text-[14px] font-medium transition-colors cursor-pointer" 
+                : "browser-btn px-4 py-2 rounded-xl border border-white/5 bg-transparent text-white/50 hover:bg-white/5 hover:text-white text-[14px] font-medium transition-colors cursor-pointer";
+        });
+        updateCliCommand();
+    });
+});
+
+function updateCliCommand() {
+    if (!cliCommandEl) return;
+    const url = urlInput.value.trim() || "https://...";
+    let format = presetInput.value;
+    let formatFlag = `-f "bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4]/best"`;
+    
+    if (format && format.startsWith("id:")) {
+        formatFlag = `-f "${format.slice(3)}" --merge-output-format mp4`;
+    }
+
+    const command = `yt-dlp --cookies-from-browser ${activeBrowser} ${formatFlag} "${url}"`;
+    cliCommandEl.textContent = command;
+}
+
+if (copyCliBtn) {
+    copyCliBtn.addEventListener("click", () => {
+        if (cliCommandEl) {
+            navigator.clipboard.writeText(cliCommandEl.textContent);
+            const icon = document.getElementById("copy-icon");
+            icon.textContent = "check";
+            icon.classList.replace("text-white/60", "text-[#a7f3d0]");
+            setTimeout(() => {
+                icon.textContent = "content_copy";
+                icon.classList.replace("text-[#a7f3d0]", "text-white/60");
+            }, 2000);
+        }
+    });
+}
 
 function resetSubmit() {
   submitBtn.disabled = false;
@@ -250,6 +298,7 @@ urlInput.addEventListener("input", () => {
         document.getElementById("preset-dropdown").classList.add("hidden");
         document.getElementById("preset-dropdown").classList.remove("flex");
         document.getElementById("subtitles-container").classList.add("hidden");
+        document.getElementById("cli-fallback-panel").classList.add("hidden");
         submitLabel.textContent = "Analyze Engine";
         document.querySelector('.drop-icon').textContent = 'bolt';
     }
@@ -295,6 +344,12 @@ async function goAnalyze(url) {
     document.getElementById("preset-dropdown").classList.remove("hidden");
     document.getElementById("preset-dropdown").classList.add("flex");
     document.getElementById("subtitles-container").classList.remove("hidden");
+    
+    // Check if contextual Local CLI is needed
+    if (data.host && (data.host.toLowerCase().includes("youtube") || data.host.toLowerCase().includes("instagram"))) {
+        document.getElementById("cli-fallback-panel").classList.remove("hidden");
+        updateCliCommand();
+    }
     
     analysisCompleteFor = url;
     submitLabel.textContent = "Download";

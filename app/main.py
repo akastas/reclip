@@ -353,6 +353,10 @@ async def index(request: Request):
         "presets": FORMAT_PRESETS,
     })
 
+@app.get("/sites", response_class=HTMLResponse)
+async def supported_sites(request: Request):
+    return templates.TemplateResponse("sites.html", {"request": request})
+
 
 @app.post("/api/info")
 async def fetch_info(req: InfoRequest):

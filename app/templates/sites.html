@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Supported Sites Dashboard - ReClip</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📥</text></svg>">
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="/static/style.css">
+<style type="text/tailwindcss">
+    :root {
+        --lavender: #d8b4fe;
+        --peach: #ffb5a7;
+        --mint: #a7f3d0;
+        --prismatic-gradient: linear-gradient(135deg, var(--lavender) 0%, var(--peach) 50%, var(--mint) 100%);
+    }
+    .bg-prismatic { background-image: var(--prismatic-gradient); }
+    .text-prismatic { background-image: var(--prismatic-gradient); -webkit-background-clip: text; background-clip: text; color: transparent; }
+</style>
+<script>
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          background: "#0a0c0e",
+          surface: "#111417",
+          "surface-container": "#1d2023",
+          primary: "#d8b4fe",
+          "on-surface": "#f1f3f6",
+        },
+        fontFamily: {
+          headline: ["Bricolage Grotesque", "sans-serif"],
+          body: ["Bricolage Grotesque", "sans-serif"],
+        },
+        maxWidth: { "content": "1600px" },
+      },
+    },
+  };
+</script>
+</head>
+<body class="bg-[#0a0c0e] text-on-surface font-body min-h-screen flex flex-col selection:bg-primary/30 selection:text-primary">
+
+<nav class="w-full z-50 font-headline pt-8 mt-2 mb-16">
+  <div class="max-w-[1200px] mx-auto px-6 lg:px-12 flex justify-between items-center">
+    <div class="flex items-center gap-4">
+        <a class="text-[28px] font-extrabold tracking-tight text-prismatic hover:opacity-80 transition-opacity" href="/">
+          ReClip
+        </a>
+    </div>
+    <a href="/" class="bg-[#111417] text-white/80 font-bold border border-white/10 px-6 py-2.5 rounded-full hover:bg-white/5 transition-colors flex items-center gap-2 shadow-lg">
+        <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+        <span class="hidden sm:inline">Back to Engine</span>
+    </a>
+  </div>
+</nav>
+
+<main class="flex-grow max-w-[1200px] mx-auto w-full px-6 lg:px-12 flex flex-col pb-24">
+    <div class="mb-16">
+        <h1 class="font-headline text-[48px] md:text-[64px] font-extrabold tracking-tighter text-on-surface mb-6">Supported Frameworks</h1>
+        <p class="text-white/60 text-[18px] md:text-[20px] max-w-3xl font-light leading-relaxed">The extraction engine is powered by yt-dlp, capable of mapping dynamic data payloads and isolating high-fidelity artifacts from over 1,800 platforms. Here are the most popular native targets.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        
+        <!-- Category: Social Media -->
+        <div class="bg-[#111417] p-8 rounded-[2rem] border border-white/5 hover:border-white/10 transition-colors shadow-xl relative overflow-hidden group">
+            <div class="absolute inset-0 bg-prismatic opacity-0 group-hover:opacity-[0.03] transition-opacity duration-500 pointer-events-none"></div>
+            <h2 class="font-headline text-[24px] font-bold text-white mb-6 flex items-center gap-3">
+                <span class="material-symbols-outlined text-prismatic">tag</span> Social Media
+            </h2>
+            <ul class="space-y-3 text-white/60 font-medium">
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">TikTok</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">Instagram <span class="text-white/20 text-sm ml-1 font-normal">(Reels, TV)</span></li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">Twitter / X</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">Facebook <span class="text-white/20 text-sm ml-1 font-normal">(Watch, Reels)</span></li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">Reddit</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">Snapchat</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">LinkedIn</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">VK</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">Pinterest</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">Discord</li>
+            </ul>
+        </div>
+
+        <!-- Category: Video Platforms -->
+        <div class="bg-[#111417] p-8 rounded-[2rem] border border-white/5 hover:border-white/10 transition-colors shadow-xl relative overflow-hidden group">
+            <div class="absolute inset-0 bg-prismatic opacity-0 group-hover:opacity-[0.03] transition-opacity duration-500 pointer-events-none"></div>
+            <h2 class="font-headline text-[24px] font-bold text-white mb-6 flex items-center gap-3">
+                <span class="material-symbols-outlined text-prismatic">play_circle</span> Video Ecosystems
+            </h2>
+            <ul class="space-y-3 text-white/60 font-medium">
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">YouTube <span class="text-white/20 text-sm ml-1 font-normal">(Shorts, Live)</span></li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">Vimeo</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">Twitch <span class="text-white/20 text-sm ml-1 font-normal">(VODs, Clips)</span></li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">Dailymotion</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">Rumble</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">Bilibili</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">Niconico</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">Odysee</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">Streamable</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">PeerTube</li>
+            </ul>
+        </div>
+
+        <!-- Category: Audio & Podcasts -->
+        <div class="bg-[#111417] p-8 rounded-[2rem] border border-white/5 hover:border-white/10 transition-colors shadow-xl relative overflow-hidden group">
+            <div class="absolute inset-0 bg-prismatic opacity-0 group-hover:opacity-[0.03] transition-opacity duration-500 pointer-events-none"></div>
+            <h2 class="font-headline text-[24px] font-bold text-white mb-6 flex items-center gap-3">
+                <span class="material-symbols-outlined text-prismatic">headphones</span> Audio & Podcasts
+            </h2>
+            <ul class="space-y-3 text-white/60 font-medium">
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">SoundCloud</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">Bandcamp</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">Mixcloud</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">Audiomack</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">Apple Podcasts</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">Patreon <span class="text-white/20 text-sm ml-1 font-normal">(Cookies req.)</span></li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">Mixcast</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">HearThis.at</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">ReverbNation</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">Freesound</li>
+            </ul>
+        </div>
+
+        <!-- Category: News & Broadcasters -->
+        <div class="bg-[#111417] p-8 rounded-[2rem] border border-white/5 hover:border-white/10 transition-colors shadow-xl relative overflow-hidden group">
+            <div class="absolute inset-0 bg-prismatic opacity-0 group-hover:opacity-[0.03] transition-opacity duration-500 pointer-events-none"></div>
+            <h2 class="font-headline text-[24px] font-bold text-white mb-6 flex items-center gap-3">
+                <span class="material-symbols-outlined text-prismatic">newspaper</span> Broadcasters
+            </h2>
+            <ul class="space-y-3 text-white/60 font-medium">
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">BBC</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">CNN</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">PBS</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">Bloomberg</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">Al Jazeera</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">NBC News</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">ABC News</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">Reuters</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">FranceTV</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">CBC</li>
+            </ul>
+        </div>
+
+        <!-- Category: Education -->
+        <div class="bg-[#111417] p-8 rounded-[2rem] border border-white/5 hover:border-white/10 transition-colors shadow-xl relative overflow-hidden group">
+            <div class="absolute inset-0 bg-prismatic opacity-0 group-hover:opacity-[0.03] transition-opacity duration-500 pointer-events-none"></div>
+            <h2 class="font-headline text-[24px] font-bold text-white mb-6 flex items-center gap-3">
+                <span class="material-symbols-outlined text-prismatic">school</span> Education
+            </h2>
+            <ul class="space-y-3 text-white/60 font-medium">
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">TED / TEDx</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">Khan Academy</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">MIT OpenCourseWare</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">Stanford</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">Udemy <span class="text-white/20 text-sm ml-1 font-normal">(Cookies req.)</span></li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">Coursera <span class="text-white/20 text-sm ml-1 font-normal">(Cookies req.)</span></li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">Pluralsight <span class="text-white/20 text-sm ml-1 font-normal">(Cookies req.)</span></li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">MasterClass <span class="text-white/20 text-sm ml-1 font-normal">(Cookies req.)</span></li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">LinkedIn Learning</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">Skillshare <span class="text-white/20 text-sm ml-1 font-normal">(Cookies req.)</span></li>
+            </ul>
+        </div>
+
+        <!-- Category: Misc & Entertainment -->
+        <div class="bg-[#111417] p-8 rounded-[2rem] border border-white/5 hover:border-white/10 transition-colors shadow-xl relative overflow-hidden group">
+            <div class="absolute inset-0 bg-prismatic opacity-0 group-hover:opacity-[0.03] transition-opacity duration-500 pointer-events-none"></div>
+            <h2 class="font-headline text-[24px] font-bold text-white mb-6 flex items-center gap-3">
+                <span class="material-symbols-outlined text-prismatic">theater_comedy</span> Entertainment
+            </h2>
+            <ul class="space-y-3 text-white/60 font-medium">
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">Imgur</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">Giphy</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">9GAG</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">Adult Swim</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">Discovery</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">Crunchyroll <span class="text-white/20 text-sm ml-1 font-normal">(Cookies req.)</span></li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">Kickstarter</li>
+                <li class="flex items-center gap-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-white/20">Rooster Teeth</li>
+            </ul>
+        </div>
+
+    </div>
+</main>
+
+<footer class="w-full py-12 border-t border-white/5 font-body">
+    <div class="max-w-[1200px] mx-auto px-6 lg:px-12 flex flex-col xl:flex-row justify-between items-center gap-8 text-[14px]">
+        <div class="text-[22px] font-extrabold text-prismatic truncate">ReClip</div>
+        <div class="text-white/30 tabular-nums font-medium flex items-center gap-4">
+            <a href="https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md" target="_blank" rel="noopener" class="hover:text-white transition-colors">Complete List (GitHub)</a>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>
